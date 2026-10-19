@@ -210,3 +210,5 @@ html:has(body.column) { background: #FFFFFF; }
   .column .documento { padding: 24px 20px; }
   .column .consulta { padding: 22px 20px; }
 }
+/* Portada sin fichas: la trama de puntos ocupa sola la derecha */
+@media (max-width: 900px) { .c-hero-visual { min-height: 160px; } }
