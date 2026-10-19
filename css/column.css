@@ -218,3 +218,30 @@ html:has(body.column) { background: #FFFFFF; }
 /* Fotos que se alternan dentro de una tarjeta de la portada */
 .c-tarjeta-foto.alterna { position: relative; }
 .c-tarjeta-foto.alterna img { position: absolute; inset: 0; }
+
+/* ===== Páginas interiores con las piezas de la portada ===== */
+.c-hero-interior .c-hero-rejilla { min-height: 440px; padding-top: 64px; padding-bottom: 64px; }
+.c-hero .migas { margin-bottom: 20px; font-size: 0.8125rem; color: var(--c-gris); }
+.c-hero .migas a { color: var(--c-gris); }
+.c-hero .migas a:hover { color: var(--c-indigo); }
+.c-hero-texto > p:not(.c-etiqueta):not(.migas) { margin-top: 24px; max-width: 34rem; font-size: 1.125rem; line-height: 1.5; color: var(--c-tinta); }
+.c-hero-foto { position: relative; justify-self: end; width: 100%; max-width: 560px; }
+.c-hero-foto img { width: 100%; height: 100%; object-fit: cover; }
+.c-hero-interior .c-hero-visual { min-height: 320px; }
+
+/* Apartados: texto a la izquierda y tarjeta blanca con la lista a la derecha */
+.c-dos-panel { align-items: start; }
+.c-dos-texto > h2 + p, .c-dos-texto > p { margin-top: 16px; }
+.c-dos-texto .documento-miniatura { margin-top: 20px; }
+.c-panel {
+  padding: 8px 28px; background: #FFFFFF; border: 1px solid var(--c-borde); border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(17,26,74,0.04), 0 8px 24px rgba(17,26,74,0.05);
+}
+.c-panel .lista, .c-panel .documento-datos { margin: 0; }
+.c-panel .lista li { padding: 16px 0; border-bottom: 1px solid var(--c-borde); font-size: 1rem; color: var(--c-tinta); }
+.c-panel .lista li:first-child { padding-top: 16px; }
+.c-panel .documento-datos div { padding: 16px 0; border-bottom: 1px solid var(--c-borde); }
+.c-panel .lista li:last-child, .c-panel .documento-datos div:last-child { border-bottom: 0; }
+.c-panel .documento-datos dt { flex-basis: 180px; }
+.c-panel .legal { padding: 24px 0; display: flex; flex-direction: column; gap: 14px; color: var(--c-tinta); }
+@media (max-width: 900px) { .c-hero-interior .c-hero-visual { display: none; } .c-hero-interior .c-hero-rejilla { min-height: 0; } .c-panel { padding: 4px 20px; } }
