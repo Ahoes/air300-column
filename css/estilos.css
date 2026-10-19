@@ -1,0 +1,461 @@
+/* AIR300 S.L. – estilos generales */
+
+/* Fuente IBM Plex Sans alojada en la propia web (fonts/, licencia SIL Open Font License) */
+@font-face { font-family: "IBM Plex Sans"; font-style: normal; font-weight: 400; font-display: swap; src: url("../fonts/ibm-plex-sans-400.woff2") format("woff2"); }
+@font-face { font-family: "IBM Plex Sans"; font-style: normal; font-weight: 500; font-display: swap; src: url("../fonts/ibm-plex-sans-500.woff2") format("woff2"); }
+@font-face { font-family: "IBM Plex Sans"; font-style: normal; font-weight: 600; font-display: swap; src: url("../fonts/ibm-plex-sans-600.woff2") format("woff2"); }
+
+:root {
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);       /* entradas y respuestas: arranca rápido */
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);   /* cosas que se transforman en pantalla */
+  --azul-noche: #0B1E2E;
+  --azul-acero: #1F5A80;
+  --texto: #1A1F24;
+  --texto-suave: #333A41;
+  --gris: #5A636B;
+  --gris-claro: #A7B3BD;
+  --linea: rgba(11, 30, 46, 0.14);
+  --linea-oscura: rgba(11, 30, 46, 0.22);
+  --fondo-gris: #F2F3F4;
+  --fondo: #DCEBF5;          /* fondo general: azul claro de la fachada de la nave */
+  --fondo-medio: #CCDFEE;    /* franjas alternas */
+  --panel: #FFFFFF;          /* paneles de contenido sobre el fondo azul */
+  --azul-claro: #8EC3E6;     /* azul de la chapa de la fachada, para detalles */
+  --azul-pizarra: #1F3A52;   /* bloque destacado de la portada */
+  --texto-sobre-oscuro: #C9D3DC;
+  --ancho: 1160px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+/* Fondo de la ventana igual que el pie: en páginas cortas no queda una franja clara debajo */
+html { background: var(--azul-noche); }
+
+/* Tamaños de letra en rem para respetar el tamaño elegido en el navegador (1rem = 16px por defecto) */
+body {
+  margin: 0;
+  font-family: "IBM Plex Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--texto);
+  background: var(--fondo);
+}
+
+img { max-width: 100%; height: auto; display: block; }
+
+a { color: var(--azul-acero); }
+a:hover { color: var(--azul-noche); }
+a:focus-visible { outline: 2px solid var(--azul-acero); outline-offset: 3px; }
+
+h1, h2, h3 { color: var(--azul-noche); font-weight: 600; line-height: 1.25; margin: 0; }
+h1 { font-size: 2.125rem; }
+h2 { font-size: 1.5rem; }
+h3 { font-size: 1.0625rem; }
+p { margin: 0; }
+
+.contenedor { max-width: var(--ancho); margin: 0 auto; padding: 0 24px; }
+
+/* Accesibilidad: enlace para saltar el menú y texto solo para lectores de pantalla */
+.saltar {
+  position: absolute; left: 16px; top: -100px; z-index: 10;
+  padding: 10px 16px; background: var(--azul-noche); color: #FFFFFF;
+}
+.saltar:focus { top: 16px; color: #FFFFFF; }
+.oculto {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+}
+
+/* Cabecera: logo, teléfono y botón "Menú"; el menú se despliega en un panel (atributo popover, sin JavaScript) */
+/* Fija arriba en todas las pantallas: el panel del menú se abre justo debajo */
+.cabecera { position: sticky; top: 0; z-index: 20; border-bottom: 1px solid var(--linea); background: #FFFFFF; }
+.cabecera .contenedor { display: flex; align-items: center; flex-wrap: nowrap; gap: 12px; height: 78px; padding-top: 0; padding-bottom: 0; }
+.logo { margin-right: auto; }
+.logo img { height: 46px; }
+
+/* Teléfono con contorno y botón "Menú" relleno, misma altura */
+.cabecera-tel, .menu-boton {
+  display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px;
+  border: 1.5px solid var(--azul-noche); font: inherit; font-weight: 600; text-decoration: none; white-space: nowrap;
+  transition: background-color 0.2s ease-out, color 0.2s ease-out;
+}
+.cabecera-tel { order: 0; margin-left: 0; background: transparent; color: var(--azul-noche); }
+.cabecera-tel:hover { background: var(--azul-noche); border-color: var(--azul-noche); color: #FFFFFF; }
+.menu-boton { background: var(--azul-noche); color: #FFFFFF; cursor: pointer; }
+.menu-boton:hover { background: var(--azul-acero); border-color: var(--azul-acero); }
+.menu-boton:focus-visible { outline: 2px solid var(--azul-acero); outline-offset: 3px; }
+/* Tres rayas junto a "Menú"; con el menú abierto se convierten en una X */
+.menu-boton { gap: 10px; }
+.menu-icono, .menu-icono::before, .menu-icono::after {
+  display: block; width: 18px; height: 2px; background: currentColor; transition: transform 0.24s var(--ease-in-out), background-color 0.12s ease;
+}
+.menu-icono { position: relative; }
+.menu-icono::before, .menu-icono::after { content: ""; position: absolute; left: 0; }
+.menu-icono::before { top: -6px; }
+.menu-icono::after { top: 6px; }
+.menu:popover-open ~ .menu-boton .menu-icono { background: transparent; }
+.menu:popover-open ~ .menu-boton .menu-icono::before { transform: translateY(6px) rotate(45deg); }
+.menu:popover-open ~ .menu-boton .menu-icono::after { transform: translateY(-6px) rotate(-45deg); }
+.tel-corto { display: none; }
+
+/* Panel del menú: se despliega bajo la cabecera, sobre azul noche */
+/* Abre en 220 ms y cierra en 150 ms (cerrar siempre más rápido que abrir); con transiciones, no con fotogramas fijos,
+   para que un doble clic rápido no haga saltar el panel */
+.menu[popover] {
+  display: none; position: fixed; inset: 78px 0 auto 0; width: 100%; height: auto; margin: 0; border: 0; overflow: visible;
+  grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 48px;
+  padding: 16px max(24px, calc((100vw - var(--ancho)) / 2 + 24px)) 32px;
+  background: var(--azul-noche); box-shadow: 0 16px 32px rgba(11, 30, 46, 0.25);
+  opacity: 0; transform: translateY(-8px);
+  transition: opacity 0.15s var(--ease-out), transform 0.15s var(--ease-out), display 0.15s allow-discrete, overlay 0.15s allow-discrete;
+}
+.menu[popover]:popover-open { display: grid; opacity: 1; transform: none; transition-duration: 0.22s; }
+@starting-style { .menu[popover]:popover-open { opacity: 0; transform: translateY(-8px); } }
+.menu[popover] a {
+  padding: 12px 0; font-size: 1rem; font-weight: 500; color: #FFFFFF; text-decoration: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.14); transition: color 0.2s ease-out;
+}
+.menu[popover] a:hover { color: var(--azul-claro); }
+.menu[popover] a[aria-current="page"] { color: var(--azul-claro); }
+.menu a:focus-visible { outline-color: #FFFFFF; }
+.menu[popover]::backdrop {
+  background-color: rgba(11, 30, 46, 0);
+  transition: background-color 0.2s var(--ease-out), display 0.2s allow-discrete, overlay 0.2s allow-discrete;
+}
+.menu[popover]:popover-open::backdrop { background-color: rgba(11, 30, 46, 0.35); }
+@starting-style { .menu[popover]:popover-open::backdrop { background-color: rgba(11, 30, 46, 0); } }
+
+@media (max-width: 640px) {
+  .cabecera .contenedor { gap: 8px; height: 68px; }
+  .logo img { height: 40px; }
+  .cabecera-tel, .menu-boton { padding: 0 14px; }
+  .tel-largo { display: none; }
+  .tel-corto { display: inline; }
+  .menu[popover] { inset: 68px 0 auto 0; grid-template-columns: 1fr; padding: 8px 16px 24px; }
+  .menu[popover] a { padding: 14px 0; font-size: 1.125rem; }
+}
+
+/* Portada */
+.portada { background: var(--azul-noche); border-bottom: 4px solid var(--azul-claro); }
+.portada img { width: 100%; height: 460px; object-fit: cover; }
+
+/* Fotos de las páginas interiores */
+.foto { position: relative; margin-top: 32px; margin-bottom: 24px; }
+.foto img { width: 100%; height: 340px; object-fit: cover; }
+
+/* Marca de imagen provisional: quitar la clase "provisional" al poner la foto real */
+.provisional { position: relative; }
+.provisional::after {
+  content: "Imagen provisional"; position: absolute; top: 12px; left: 12px;
+  padding: 2px 8px; font-size: 0.75rem; color: #FFFFFF; background: rgba(11, 30, 46, 0.8);
+}
+
+/* Datos que faltan por confirmar: se ven resaltados para revisarlos */
+.pendiente { background: #FFF1B8; padding: 0 4px; }
+
+.bloque { padding-top: 64px; padding-bottom: 64px; }
+.bloque-gris { background: var(--fondo-medio); border-top: 1px solid var(--linea-oscura); border-bottom: 1px solid var(--linea-oscura); }
+.bloque-titulo { margin-bottom: 28px; }
+
+.dos-columnas { display: flex; flex-wrap: wrap; gap: 48px; }
+.dos-columnas > :first-child { flex: 1 1 380px; }
+.dos-columnas > :last-child { flex: 1 1 520px; }
+.texto { display: flex; flex-direction: column; gap: 16px; color: var(--texto-suave); }
+
+/* Sectores */
+.sectores { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr)); gap: 32px; }
+.sector { display: flex; flex-direction: column; gap: 12px; padding-bottom: 20px; background: var(--panel); }
+.sector h3, .sector p { padding: 0 20px; }
+.sector img { width: 100%; height: 170px; object-fit: cover; }
+.sector p { font-size: 0.9375rem; color: var(--texto-suave); }
+.sectores-grandes .sector img { height: 300px; }
+.sector h3 a { color: inherit; text-underline-offset: 3px; }
+.sector h3 a:hover { color: var(--azul-acero); }
+
+/* Autorización y documentación (portada) */
+.calidad { background: var(--azul-pizarra); color: var(--texto-sobre-oscuro); border-bottom: 1px solid #2E4A63; }
+.calidad .contenedor { display: flex; flex-wrap: wrap; gap: 48px; padding-top: 56px; padding-bottom: 56px; }
+.calidad .columna { display: flex; flex-direction: column; gap: 12px; }
+.calidad .columna:first-child { flex: 1 1 480px; }
+.calidad .columna:last-child { flex: 1 1 360px; }
+.calidad h2, .calidad strong { color: #FFFFFF; }
+.calidad a { color: #FFFFFF; font-weight: 500; text-underline-offset: 3px; }
+.calidad a:hover { color: var(--texto-sobre-oscuro); }
+.calidad a:focus-visible { outline-color: #FFFFFF; }
+
+/* Pie */
+.pie { background: var(--azul-noche); color: var(--gris-claro); border-top: 1px solid #22384A; font-size: 0.8125rem; }
+.pie .contenedor { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; padding-top: 18px; padding-bottom: 18px; }
+.pie a { color: var(--gris-claro); }
+
+/* Páginas interiores: industria, submarinismo, contacto, legislación y acreditaciones */
+/* Introducción sobre franja azul marino a todo el ancho (la sombra extiende el fondo fuera del contenedor) */
+.intro {
+  padding-top: 72px; padding-bottom: 64px; margin-bottom: 40px;
+  background: var(--azul-noche); box-shadow: 0 0 0 100vmax var(--azul-noche); clip-path: inset(0 -100vmax);
+}
+.migas { font-size: 0.8125rem; color: var(--gris-claro); margin-bottom: 12px; }
+.migas a { color: var(--gris-claro); }
+.migas a:hover { color: #FFFFFF; }
+.migas a:focus-visible, .intro a:focus-visible, .pagina-hero a:focus-visible { outline-color: #FFFFFF; }
+.intro h1, .pagina-hero h1 {
+  margin-bottom: 16px; color: #FFFFFF; text-wrap: balance;
+  font-size: clamp(2rem, 1.3rem + 2.4vw, 3rem); line-height: 1.1; letter-spacing: -0.01em;
+}
+.intro p, .pagina-hero p { max-width: 640px; font-size: 1.0625rem; color: var(--texto-sobre-oscuro); }
+.intro .pendiente { color: var(--texto); }
+
+/* Cabecera partida: texto sobre azul noche alineado con el contenido, foto de la mitad hasta el borde derecho */
+.pagina-hero {
+  display: grid; margin-bottom: 40px; background: var(--azul-noche);
+  grid-template-columns: minmax(24px, 1fr) minmax(0, calc(var(--ancho) * 0.58 - 24px)) minmax(0, calc(var(--ancho) * 0.42 - 24px)) minmax(24px, 1fr);
+}
+.pagina-hero-texto { grid-column: 2; display: flex; flex-direction: column; justify-content: flex-end; padding: 72px 48px 64px 0; }
+.pagina-hero-foto { grid-column: 3 / 5; position: relative; min-height: clamp(320px, 42vh, 400px); }
+.pagina-hero-foto img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+
+/* Fotos que se alternan (Industria y Submarinismo): una encima de otra; la de arriba aparece y desaparece con un fundido */
+.alterna::after { z-index: 2; }
+.alterna img:nth-child(2) { opacity: 0; }
+
+/* Bloques de contenido: sin paneles, separados por un filete azul noche como en la portada */
+.documentos { padding-bottom: 64px; }
+.documento {
+  display: flex; flex-wrap: wrap; gap: 24px 64px;
+  padding: 40px 0 48px; border-top: 2px solid var(--azul-noche);
+}
+.documento-resumen { flex: 1 1 300px; display: flex; flex-direction: column; gap: 12px; }
+.documento-resumen h2 { font-size: clamp(1.5rem, 1.2rem + 0.9vw, 2rem); line-height: 1.15; }
+.documento-resumen p { color: var(--texto-suave); }
+.documento-miniatura { display: block; width: 180px; margin-top: 8px; border: 1px solid var(--linea-oscura); }
+.documento-miniatura:hover { border-color: var(--azul-noche); }
+.documento-datos { flex: 2 1 520px; margin: 0; }
+.documento-datos div { display: flex; flex-wrap: wrap; gap: 4px 24px; padding: 14px 0; border-bottom: 1px solid var(--linea-oscura); }
+.documento-datos dt { flex: 0 1 220px; font-size: 0.8125rem; color: var(--gris); padding-top: 2px; }
+.documento-datos dd { flex: 1 1 360px; margin: 0; color: var(--azul-noche); }
+
+.legal { flex: 2 1 520px; display: flex; flex-direction: column; gap: 14px; color: var(--texto-suave); }
+
+.lista { flex: 2 1 520px; margin: 0; padding: 0; list-style: none; }
+.lista li { padding: 14px 0; border-bottom: 1px solid var(--linea-oscura); font-size: 1.0625rem; color: var(--azul-noche); }
+.lista li:first-child { padding-top: 4px; }
+
+/* Bloque de consulta con botón de presupuesto */
+.consulta {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 32px;
+  padding: 24px 36px; background: var(--azul-noche); color: var(--texto-sobre-oscuro);
+}
+.consulta a:not(.boton) { color: #FFFFFF; }
+.consulta a:focus-visible { outline-color: #FFFFFF; }
+.consulta .boton { margin-top: 0; }
+
+/* Contacto */
+.contacto-foto { flex: 2 1 420px; display: flex; flex-direction: column; gap: 16px; }
+.contacto-foto .foto { margin-top: 0; }
+.contacto-foto .foto img { height: 300px; }
+
+.boton {
+  align-self: flex-start; margin-top: 8px;
+  display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px;
+  border: 1px solid var(--azul-noche); background: var(--azul-noche); color: #FFFFFF;
+  text-decoration: none; font-weight: 600;
+}
+.boton:hover { background: var(--azul-acero); border-color: var(--azul-acero); color: #FFFFFF; }
+/* Sobre fondo oscuro, botón blanco */
+.consulta .boton { background: #FFFFFF; border-color: #FFFFFF; color: var(--azul-noche); }
+.consulta .boton:hover { background: var(--azul-claro); border-color: var(--azul-claro); color: var(--azul-noche); }
+
+/* ===== Portada: taller a la vista ===== */
+/* Imagen a todo el ancho con el texto encima; imagen y capa ocupan la misma celda de la rejilla */
+.hero { display: grid; background: var(--azul-noche); overflow: hidden; }
+.hero > * { grid-area: 1 / 1; }
+.hero-imagen img { width: 100%; height: clamp(420px, 62vh, 560px); object-fit: cover; }
+.hero-imagen::after { z-index: 2; }
+.hero-capa {
+  z-index: 1; display: flex; align-items: flex-end;
+  background: linear-gradient(90deg, rgba(11, 30, 46, 0.95) 0%, rgba(11, 30, 46, 0.86) 36%, rgba(11, 30, 46, 0.42) 66%, rgba(11, 30, 46, 0.1) 100%);
+}
+.hero-texto { width: 100%; display: flex; flex-direction: column; gap: 20px; padding-top: 80px; padding-bottom: 64px; }
+.hero h1 {
+  max-width: 660px; color: #FFFFFF; text-wrap: balance;
+  font-size: clamp(2.25rem, 1.3rem + 3.2vw, 3.75rem); line-height: 1.08; letter-spacing: -0.015em;
+}
+.hero p { max-width: 560px; font-size: 1.125rem; color: var(--texto-sobre-oscuro); }
+.franja-sector h2 a:focus-visible { outline-color: #FFFFFF; }
+
+/* Sectores: dos fotos grandes, de borde a borde; toda la foto es enlace */
+.franja-sectores {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(min(420px, 100%), 1fr));
+  gap: 2px; background: var(--azul-noche);
+}
+.franja-sector { position: relative; display: grid; overflow: hidden; }
+.franja-sector > * { grid-area: 1 / 1; }
+.franja-sector-foto img { width: 100%; height: clamp(320px, 30vw, 440px); object-fit: cover; }
+.franja-sector-texto {
+  z-index: 1; align-self: end; display: flex; flex-direction: column; gap: 8px; padding: 112px 40px 36px;
+  background: linear-gradient(to top, rgba(11, 30, 46, 0.94) 0%, rgba(11, 30, 46, 0.72) 55%, rgba(11, 30, 46, 0) 100%);
+}
+.franja-sector h2 { color: #FFFFFF; font-size: clamp(1.5rem, 1.1rem + 1.2vw, 2.125rem); line-height: 1.15; }
+.franja-sector h2 a { color: #FFFFFF; text-decoration: none; text-underline-offset: 5px; }
+.franja-sector h2 a::before { content: ""; position: absolute; inset: 0; z-index: 3; }
+.franja-sector:hover h2 a { text-decoration: underline; }
+.franja-sector p { max-width: 460px; color: var(--texto-sobre-oscuro); }
+
+/* Servicios del taller: lista con filetes, sin tarjetas */
+.inicio-servicios {
+  display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 28px 64px;
+  padding-top: 80px; padding-bottom: 80px;
+}
+.inicio-servicios-titulo { display: flex; flex-direction: column; gap: 12px; }
+.inicio-servicios h2 { font-size: clamp(1.625rem, 1.2rem + 1.2vw, 2.25rem); line-height: 1.15; }
+.inicio-servicios-titulo p { max-width: 380px; color: var(--texto-suave); }
+.inicio-servicios ul { margin: 0; padding: 0; list-style: none; border-top: 2px solid var(--azul-noche); }
+.inicio-servicios li { padding: 16px 0; border-bottom: 1px solid var(--linea-oscura); font-size: 1.0625rem; color: var(--azul-noche); }
+
+@media (max-width: 860px) {
+  .inicio-servicios { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 640px) {
+  /* En móvil la imagen va arriba y el texto debajo, sobre azul noche */
+  .hero > * { grid-area: auto; }
+  .hero-imagen img { min-height: 0; height: 240px; }
+  .hero-capa { background: var(--azul-noche); }
+  .contenedor.hero-texto { gap: 16px; padding-top: 32px; padding-bottom: 40px; }
+  .hero p { font-size: 1rem; }
+  .franja-sector-foto img { height: 360px; }
+  .franja-sector-texto { padding: 88px 20px 24px; }
+  .contenedor.inicio-servicios { padding-top: 48px; padding-bottom: 48px; }
+}
+
+/* Móvil */
+@media (max-width: 640px) {
+  .contenedor { padding: 0 16px; }
+  h1 { font-size: 1.75rem; }
+  h2 { font-size: 1.375rem; }
+
+  .portada img { height: 260px; }
+  .foto img, .contacto-foto .foto img { height: 200px; }
+  /* Cabecera partida en móvil: foto arriba, texto debajo */
+  .pagina-hero { grid-template-columns: 1fr; margin-bottom: 28px; }
+  .pagina-hero-foto { grid-column: 1; grid-row: 1; min-height: 0; }
+  .pagina-hero-foto img { position: static; height: 240px; }
+  .pagina-hero-texto { grid-column: 1; padding: 28px 16px 36px; }
+  .pagina-hero-foto.alterna { min-height: 240px; }
+  .pagina-hero-foto.alterna img { position: absolute; height: 100%; }
+
+  .bloque { padding-top: 40px; padding-bottom: 40px; }
+  .bloque-titulo { margin-bottom: 20px; }
+  .dos-columnas { gap: 20px; }
+  .sectores { gap: 28px; }
+  .sectores-grandes .sector img { height: 220px; }
+  .calidad .contenedor { gap: 32px; padding-top: 40px; padding-bottom: 40px; }
+
+  .intro { padding-top: 36px; padding-bottom: 36px; margin-bottom: 28px; }
+  .documento { padding: 28px 0 36px; }
+  .consulta { padding: 20px; }
+}
+
+/* ===== Movimiento ===== */
+/* Todo es CSS. Si el sistema pide "reducir movimiento", se desactiva al final del archivo. */
+
+html { scroll-behavior: smooth; }
+
+/* Transiciones suaves en enlaces y botones */
+.boton { transition: background-color 0.2s ease, color 0.2s ease; }
+
+/* Cabecera fija en pantallas grandes, con sombra al bajar */
+html { scroll-padding-top: 90px; }
+@media (min-width: 641px) {
+  @supports (animation-timeline: scroll()) {
+    .cabecera { animation: cabecera-sombra linear both; animation-timeline: scroll(); animation-range: 0 140px; }
+  }
+}
+@keyframes cabecera-sombra { to { box-shadow: 0 2px 14px rgba(11, 30, 46, 0.14); } }
+
+/* Entrada al cargar: la imagen principal se acerca y el texto aparece */
+.portada { overflow: hidden; }
+.portada img { animation: portada-entrada 0.9s var(--ease-out) both; }
+@keyframes portada-entrada { from { transform: scale(1.03); opacity: 0.6; } to { transform: none; opacity: 1; } }
+
+.hero-imagen img { animation: portada-entrada 0.9s var(--ease-out) both; }
+.hero-texto > * { animation: subir 0.5s var(--ease-out) both; }
+.hero-texto > :nth-child(2) { animation-delay: 0.06s; }
+.hero-texto > :nth-child(3) { animation-delay: 0.12s; }
+.franja-sector-foto img { transition: transform 0.6s var(--ease-out); }
+@media (hover: hover) and (pointer: fine) {
+  .franja-sector:has(a):hover .franja-sector-foto img { transform: scale(1.04); }
+}
+
+.pagina-hero-texto > *, .intro > h1, .intro > p {
+  animation: subir 0.5s var(--ease-out) both;
+}
+.pagina-hero-texto > :nth-child(2), .intro > h1 { animation-delay: 0.06s; }
+.pagina-hero-texto > :nth-child(3), .intro > p { animation-delay: 0.12s; }
+.pagina-hero-foto { overflow: hidden; }
+.pagina-hero-foto img { animation: portada-entrada 0.9s var(--ease-out) both; }
+@keyframes subir { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+
+/* Alternancia de las fotos de Industria y Submarinismo: ciclo de 14 s, fundido de algo más de 1 s y acercamiento lento */
+.alterna img { animation: acercar 14s ease-in-out infinite alternate; }
+.alterna img:nth-child(2) { animation: alternar 14s ease-in-out infinite, acercar 14s ease-in-out infinite alternate; }
+@keyframes alternar { 0%, 42% { opacity: 0; } 50%, 92% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes acercar { from { transform: scale(1); } to { transform: scale(1.06); } }
+
+/* Aparición de los bloques al hacer scroll (navegadores que lo admiten; en el resto se ven sin efecto) */
+@supports (animation-timeline: view()) {
+  .documento, .sector, .calidad .columna, .consulta {
+    animation: aparecer linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 45%;
+  }
+}
+@keyframes aparecer { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+
+/* Fotos de sectores: ligero acercamiento al pasar el ratón */
+.sector .provisional { overflow: hidden; }
+.sector img { transition: transform 0.6s var(--ease-out); }
+@media (hover: hover) and (pointer: fine) {
+  .sector:hover img { transform: scale(1.05); }
+}
+
+/* Respetar la preferencia de reducir movimiento */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition-property: color, background-color, border-color, opacity !important; }
+  .boton:active, .cabecera-tel:active, .menu-boton:active { transform: none; }
+}
+
+
+/* ===== Prueba: retoques de la revisión de diseño ===== */
+/* Tipografía: sin palabras sueltas al final de párrafos y titulares; cifras de ancho fijo en datos y teléfonos */
+p, li, dd { text-wrap: pretty; }
+h2, h3 { text-wrap: balance; }
+h2 { letter-spacing: -0.01em; }
+.documento-datos dd, .cabecera-tel, a[href^="tel:"] { font-variant-numeric: tabular-nums; }
+a[href^="tel:"] { white-space: nowrap; }
+
+/* Superficies azul noche con un grano muy suave para que no se vean planas */
+.hero-capa, .pagina-hero, .calidad, .consulta {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.045 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+}
+/* Portada: degradado con caída irregular (sombra radial abajo a la izquierda) en vez de uno lineal uniforme */
+.hero-capa {
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.045 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E"),
+    radial-gradient(ellipse 70% 90% at 10% 100%, rgba(11, 30, 46, 0.7) 0%, rgba(11, 30, 46, 0) 70%),
+    linear-gradient(90deg, rgba(11, 30, 46, 0.92) 0%, rgba(11, 30, 46, 0.78) 34%, rgba(11, 30, 46, 0.3) 68%, rgba(11, 30, 46, 0.06) 100%);
+}
+@media (max-width: 640px) { .hero-capa { background-color: var(--azul-noche); } }
+
+/* Respiración óptica: un poco más de aire abajo que arriba */
+.inicio-servicios { padding-bottom: 104px; }
+.calidad .contenedor { padding-top: 64px; padding-bottom: 72px; }
+
+/* Botones: al pulsar se encogen un poco, así se nota que la web ha recibido el toque */
+.boton, .cabecera-tel, .menu-boton { transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.16s var(--ease-out); }
+.boton:active, .cabecera-tel:active, .menu-boton:active { transform: scale(0.97); }
+a, button { -webkit-tap-highlight-color: transparent; }
+
+/* Página 404 */
+.error-404 p { max-width: 560px; }
