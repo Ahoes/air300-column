@@ -215,3 +215,6 @@ html:has(body.column) { background: #FFFFFF; }
 /* Los botones mandan sobre el color general de los enlaces */
 .column .c-boton, .column .c-boton:hover { color: #FFFFFF; }
 .column .c-boton-sec, .column .c-boton-sec:hover { color: var(--c-indigo); }
+/* Fotos que se alternan dentro de una tarjeta de la portada */
+.c-tarjeta-foto.alterna { position: relative; }
+.c-tarjeta-foto.alterna img { position: absolute; inset: 0; }
