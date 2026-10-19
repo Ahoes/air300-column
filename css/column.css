@@ -212,3 +212,6 @@ html:has(body.column) { background: #FFFFFF; }
 }
 /* Portada sin fichas: la trama de puntos ocupa sola la derecha */
 @media (max-width: 900px) { .c-hero-visual { min-height: 160px; } }
+/* Los botones mandan sobre el color general de los enlaces */
+.column .c-boton, .column .c-boton:hover { color: #FFFFFF; }
+.column .c-boton-sec, .column .c-boton-sec:hover { color: var(--c-indigo); }
