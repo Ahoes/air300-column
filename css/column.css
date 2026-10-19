@@ -245,3 +245,39 @@ html:has(body.column) { background: #FFFFFF; }
 .c-panel .documento-datos dt { flex-basis: 180px; }
 .c-panel .legal { padding: 24px 0; display: flex; flex-direction: column; gap: 14px; color: var(--c-tinta); }
 @media (max-width: 900px) { .c-hero-interior .c-hero-visual { display: none; } .c-hero-interior .c-hero-rejilla { min-height: 0; } .c-panel { padding: 4px 20px; } }
+
+/* ===== Revisión de color: todo con la paleta Column ===== */
+/* Índigo = marca, botones y enlaces · índigo claro = al pasar el ratón · azul océano = solo cifras y datos · cian = página activa del menú */
+.column { --c-indigo-hover: #1C2766; --c-cian: #88DEEB; }
+.column a { color: var(--c-indigo); text-decoration-color: rgba(17, 26, 74, 0.35); text-underline-offset: 3px; }
+.column a:hover { color: var(--c-indigo-hover); text-decoration-color: currentColor; }
+.column a:focus-visible, .column button:focus-visible { outline: 2px solid var(--c-indigo); outline-offset: 3px; }
+
+/* Saltar al contenido */
+.column .saltar, .column .saltar:focus, .column .saltar:hover { background: var(--c-indigo); color: #FFFFFF; border-radius: var(--c-radio); }
+
+/* Cabecera: los dos botones cambian al mismo índigo claro */
+.column .cabecera-tel { color: var(--c-indigo); border-color: var(--c-indigo); }
+.column .cabecera-tel:hover { background: var(--c-indigo); border-color: var(--c-indigo); color: #FFFFFF; }
+.column .menu-boton { color: #FFFFFF; }
+.column .menu-boton:hover { background: var(--c-indigo-hover); border-color: var(--c-indigo-hover); color: #FFFFFF; }
+.column .c-boton:hover { background: var(--c-indigo-hover); border-color: var(--c-indigo-hover); }
+.column .boton:hover { background: var(--c-indigo-hover); border-color: var(--c-indigo-hover); }
+
+/* Menú desplegable */
+.column .menu[popover] { box-shadow: 0 16px 32px rgba(17, 26, 74, 0.25); }
+.column .menu[popover] a { color: #FFFFFF; text-decoration: none; }
+.column .menu[popover] a:hover, .column .menu[popover] a[aria-current="page"] { color: var(--c-cian); }
+.column .menu a:focus-visible { outline-color: #FFFFFF; }
+.column .menu[popover]:popover-open::backdrop { background-color: rgba(17, 26, 74, 0.35); }
+
+/* Sombra de la cabecera al bajar, en índigo */
+@keyframes cabecera-sombra-column { to { box-shadow: 0 2px 14px rgba(17, 26, 74, 0.12); } }
+@media (min-width: 641px) { @supports (animation-timeline: scroll()) { .column .cabecera { animation-name: cabecera-sombra-column; } } }
+
+/* Enlaces sobre fondo índigo y del pie */
+.column .consulta a:not(.boton) { color: #FFFFFF; }
+.column .c-pie a { color: var(--c-tinta); }
+.column .c-pie a:hover { color: var(--c-indigo); }
+.column .c-hero .migas a { color: var(--c-gris); }
+.column .c-hero .migas a:hover { color: var(--c-indigo); }
